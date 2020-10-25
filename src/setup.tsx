@@ -32,6 +32,16 @@ export function Setup(props: Props): JSX.Element {
   }, [props.exercises])
 
   function startWorkout() {
+    const newExercises = props.exercises.reduce((array, exercise) => {
+      if (exercise.name) {
+        exercise.name = exercise.name.trim()
+      }
+      if (exercise.name !== "") {
+        array.push(exercise)
+      }
+      return array
+    }, new Array<Exercise>())
+    props.setExercises(newExercises)
     props.setSetup(false)
   }
 
