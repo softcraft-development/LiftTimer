@@ -1,0 +1,33 @@
+$red: #e90013;
+$green: #23ca00;
+$orange: #f58700;
+
+html {
+  height: 100%;
+}
+
+body {
+  color: white;
+  margin: 0px;
+  min-height: 100%;
+}
+
+#timer-app {
+  min-height: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.exercise--active {
+  background-color: $green;
+}
+
+.exercise--alert {
+  background-color: $orange;
+}
+
+.exercise--rest {
+  background-color: $red;
+}
