@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 var path = require("path")
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: "./src/index.tsx",
   devtool: "source-map",
   devServer: {
     contentBase: path.join(__dirname, "dist"),
