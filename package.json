@@ -4,5 +4,8 @@
   "main": "src/index.js",
   "repository": "git@github.com:softcraft-development/LiftTimer.git",
   "author": "Craig Walker",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^5.2.0"
+  }
 }
