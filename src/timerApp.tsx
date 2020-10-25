@@ -6,7 +6,7 @@ import WorkingOut from "./workingOut"
 
 export function TimerApp(): JSX.Element {
   const workout = useSelector<State, boolean>((state) => {
-    return !!state.currentExercise
+    return !!state.currentExercise || state.currentExercise === 0
   })
 
   if (workout) {
