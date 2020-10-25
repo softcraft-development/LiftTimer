@@ -3,22 +3,22 @@ $green: #23ca00;
 $orange: #f58700;
 
 html {
-  height: 100%;
+  min-height: 100vh;
 }
 
 body {
   color: black;
-  font-family: 'Krona One', sans-serif;
+  font-family: "Krona One", sans-serif;
   margin: 0px;
-  min-height: 100%;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
 }
 
 #timer-app {
-  min-height: 100%;
-}
-
-.full-height {
-  height: 100%;
+  min-height: 100vh;
 }
 
 .exercise--active {
