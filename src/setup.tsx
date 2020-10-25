@@ -1,23 +1,38 @@
-import React from "react"
-import { useDispatch, useSelector } from "react-redux"
-import startWorkout from "./actions/startWorkout"
-import { DEFAULT_EXERCISE, Exercise, State } from "./state"
+import React, { useEffect, useState } from "react"
+import { Exercise } from "./exercise"
 import ExerciseInput from "./exerciseInput"
 
-export function Setup(): JSX.Element {
-  const dispatch = useDispatch()
+export interface Props {
+  exercises: Exercise[],
+  setExercises: React.Dispatch<Exercise[]>
+  setSetup: React.Dispatch<boolean>
+}
 
+export function loadDefaultWeight(): number {
+  const defaultWeight = JSON.parse(window.localStorage.getItem("defaultWeight") || "15")
+  return defaultWeight
+}
 
-  let exercises = useSelector<State, Exercise[]>((state) => state.exercises)
-  if (exercises.length === 0) {
-    const defaultWeight = useSelector<State, number>((state) => state.defaultWeight)
-    exercises = [
-      {
+export function Setup(props: Props): JSX.Element {
+  const [defaultWeight, setDefaultWeight] = useState(loadDefaultWeight())
+
+  useEffect(() => {
+    window.localStorage.setItem("defaultWeight", JSON.stringify(defaultWeight))
+  }, [defaultWeight])
+
+  useEffect(() => {
+    if (props.exercises.length === 0) {
+      props.setSetup(true)
+      props.setExercises([{
         name: "",
-        time: DEFAULT_EXERCISE,
+        time: 30,
         weight: defaultWeight
-      }
-    ]
+      }])
+    }
+  }, [props.exercises])
+
+  function startWorkout() {
+    props.setSetup(false)
   }
 
   return <div className="setup timer-mode">
@@ -25,14 +40,14 @@ export function Setup(): JSX.Element {
 
     <div className="setup__exercises">
       {
-        exercises.map((exercise, index) => {
+        props.exercises.map((exercise, index) => {
           return <ExerciseInput key={index} exercise={exercise}></ExerciseInput>
         })
       }
     </div>
 
     <div className="controls">
-      <button className="workout__start controls__control" onClick={() => dispatch(startWorkout())}>Start</button>
+      <button className="workout__start controls__control" onClick={startWorkout}>Start</button>
     </div>
   </div>
 }
