@@ -1,0 +1,8 @@
+{
+  "name": "lift-timer",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:softcraft-development/LiftTimer.git",
+  "author": "Craig Walker",
+  "license": "MIT"
+}
