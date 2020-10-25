@@ -1,12 +1,12 @@
 import Setup from "./setup"
-import Workout from "./workoutDisplay"
+import WorkingOut from "./workingOut"
 import React from "react"
 
 export function TimerApp(): JSX.Element {
   const [workout, setWorkout] = React.useState(false)
 
   if (workout) {
-    return <Workout setWorkout={setWorkout} />
+    return <WorkingOut setWorkout={setWorkout} />
   }
   return <Setup setWorkout={setWorkout} />
 }

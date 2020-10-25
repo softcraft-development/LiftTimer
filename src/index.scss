@@ -14,24 +14,47 @@ body {
 }
 
 button {
+  background: none;
+  border-radius: 5px;
   font: inherit;
+  padding: 0.5em 1em;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  color: inherit;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-top: 0;
 }
 
 #timer-app {
+  align-content: stretch;
+  align-items: stretch;
+  display: flex;
   min-height: 100vh;
 }
 
-.exercise--active {
-  background-color: $green;
-  color: white;
+.timer-mode {
+  padding: 4em;
+  flex: 1 1 auto;
 }
 
-.exercise--alert {
+.working-out--active {
+  background-color: $green;
+  color: white;
+
+  button {
+    border-color: white;
+  }
+}
+
+.working-out--alert {
   background-color: $orange;
   color: white;
 }
 
-.exercise--rest {
+.working-out--rest {
   background-color: $red;
   color: white;
 }
