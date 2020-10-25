@@ -1,14 +1,18 @@
+import { State } from "./state"
+import { useSelector } from "react-redux"
+import React from "react"
 import Setup from "./setup"
 import WorkingOut from "./workingOut"
-import React from "react"
 
 export function TimerApp(): JSX.Element {
-  const [workout, setWorkout] = React.useState(false)
+  const workout = useSelector<State, boolean>((state) => {
+    return !!state.currentExercise
+  })
 
   if (workout) {
-    return <WorkingOut setWorkout={setWorkout} />
+    return <WorkingOut />
   }
-  return <Setup setWorkout={setWorkout} />
+  return <Setup />
 }
 
 export default TimerApp

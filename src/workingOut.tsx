@@ -1,10 +1,14 @@
 import React from "react"
-import { SetHook } from "./setHook"
+import { useDispatch } from "react-redux"
+import stopWorkout from "./actions/stopWorkout"
 
-function WorkingOut({ setWorkout }: { setWorkout: SetHook<boolean> }): JSX.Element {
+
+function WorkingOut(): JSX.Element {
+  const dispatch = useDispatch()
+
   return <div className="working-out working-out--active timer-mode">
     <h1 className="working-out__heading">Workout</h1>
-    <button className="working-out__off" onClick={() => setWorkout(false)}>Off</button>
+    <button className="working-out__off" onClick={() => dispatch(stopWorkout)}>Stop</button>
   </div>
 }
 
