@@ -31,6 +31,14 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
     ],
   },
   plugins: [
