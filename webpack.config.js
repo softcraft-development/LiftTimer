@@ -1,11 +1,17 @@
-/* global module, require */
+/* global module, require, __dirname */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+var path = require("path")
 
 module.exports = {
   entry: "./src/index.ts",
   devtool: "source-map",
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    port: 9000
+  },
   module: {
     rules: [
       {
