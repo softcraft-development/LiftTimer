@@ -24,7 +24,11 @@ button {
   color: inherit;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   margin-top: 0;
 }
 
@@ -33,6 +37,19 @@ h1, h2, h3, h4, h5 {
   align-items: stretch;
   display: flex;
   min-height: 100vh;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.controls__control {
+  margin-right: 1em;
+}
+
+.setup__exercise {
+  margin-bottom: 1em;
 }
 
 .timer-mode {

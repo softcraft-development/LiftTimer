@@ -5,14 +5,16 @@ import Setup from "./setup"
 import WorkingOut from "./workingOut"
 
 export function TimerApp(): JSX.Element {
-  const workout = useSelector<State, boolean>((state) => {
-    return !!state.currentExercise || state.currentExercise === 0
+  const setup = useSelector<State, boolean>((state) => {
+    return state?.setup ||
+      !state?.exercises ||
+      state.exercises.length === 0
   })
 
-  if (workout) {
-    return <WorkingOut />
+  if (setup) {
+    return <Setup />
   }
-  return <Setup />
+  return <WorkingOut />
 }
 
 export default TimerApp
