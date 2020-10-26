@@ -49,7 +49,44 @@ h5 {
 }
 
 .setup__exercise {
+  border: 1px solid #cccccc;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
   margin-bottom: 1em;
+  padding: 0.5em;
+  position: relative;
+}
+
+.setup-exercise__id {
+  margin-right: 0.5em;
+}
+
+.setup__exercises {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.setup__field-set {
+  margin-right: 1em;
+  border: none;
+  padding: 0;
+}
+
+.setup__label {
+  margin-right: 0.5em;
+}
+
+.setup__quantity-button {
+  border: none;
+  line-height: 1;
+  margin-right: 0.25em;
+  padding: 0.1em;
+}
+
+.setup__weight {
+  width: 3em;
 }
 
 .timer-mode {
