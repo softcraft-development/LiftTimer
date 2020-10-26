@@ -7,7 +7,6 @@ export interface Props {
   exercises: Exercise[],
   restTime: number,
   setExercises: React.Dispatch<Exercise[]>
-  setSetup: React.Dispatch<boolean>,
   setRestTime: React.Dispatch<number>,
 }
 
@@ -104,10 +103,7 @@ export function Setup(props: Props): JSX.Element {
       }
       return array
     }, new Array<Exercise>())
-    if (exercises.length > 0) {
-      props.setExercises(newExercises)
-      props.setSetup(false)
-    }
+    props.setExercises(newExercises)
   }, [exercises])
 
   return <div className="setup timer-mode">

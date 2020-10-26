@@ -25,11 +25,10 @@ export function TimerApp(): JSX.Element {
   const [restTime, setRestTime] = useState(loadRestTime())
 
   useEffect(() => {
-    if (exercises.length > 0) {
-      window.localStorage.setItem("exercises", JSON.stringify(exercises))
-      return
+    window.localStorage.setItem("exercises", JSON.stringify(exercises))
+    if (exercises.length === 0) {
+      setSetup(true)
     }
-    setSetup(true)
   }, [exercises])
 
   useEffect(() => {
@@ -43,7 +42,6 @@ export function TimerApp(): JSX.Element {
       restTime={restTime}
       setExercises={setExercises}
       setRestTime={setRestTime}
-      setSetup={setSetup}
     />
   }
   else {
