@@ -39,20 +39,6 @@ export function Setup(props: Props): JSX.Element {
     setExercises(initialize(props.exercises, defaultWeight))
   }, [props.exercises])
 
-  const startWorkout = useCallback(() => {
-    const newExercises = exercises.reduce((array, exercise) => {
-      if (exercise.name) {
-        exercise.name = exercise.name.trim()
-      }
-      if (exercise.name !== "") {
-        array.push(exercise)
-      }
-      return array
-    }, new Array<Exercise>())
-    props.setExercises(newExercises)
-    props.setSetup(false)
-  }, [exercises])
-
   const addAt = useCallback((addIndex: number) => {
     const newExercises = exercises.reduce((array, exercise, index) => {
       array.push(exercise)
@@ -98,9 +84,31 @@ export function Setup(props: Props): JSX.Element {
     setExercises(newExercises)
   }, [exercises])
 
+  const updateExercise = useCallback((exercise: Exercise, index: number) => {
+    const newExercises = [...exercises]
+    newExercises[index] = exercise
+    setExercises(newExercises)
+  }, [exercises])
+
   useEffect(() => {
     window.localStorage.setItem("defaultWeight", JSON.stringify(defaultWeight))
   }, [defaultWeight])
+
+  const startWorkout = useCallback(() => {
+    const newExercises = exercises.reduce((array, exercise) => {
+      if (exercise.name) {
+        exercise.name = exercise.name.trim()
+      }
+      if (exercise.name !== "") {
+        array.push(exercise)
+      }
+      return array
+    }, new Array<Exercise>())
+    if (exercises.length > 0) {
+      props.setExercises(newExercises)
+      props.setSetup(false)
+    }
+  }, [exercises])
 
   return <div className="setup timer-mode">
     <h1 className="setup__heading">Setup Exercises</h1>
@@ -115,7 +123,7 @@ export function Setup(props: Props): JSX.Element {
             id={`${index + 1}`}
             key={index}
             remove={() => removeAt(index)}
-            setExercise={() => setExercises([...exercises])}
+            setExercise={(e) => updateExercise(e, index)}
             up={() => moveUp(index)}
           />
         })
