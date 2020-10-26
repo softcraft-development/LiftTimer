@@ -38,7 +38,13 @@ export function TimerApp(): JSX.Element {
 
   let mode: JSX.Element
   if (shouldSetup) {
-    mode = <Setup exercises={exercises} setSetup={setSetup} setExercises={setExercises} />
+    mode = <Setup
+      exercises={exercises}
+      restTime={restTime}
+      setExercises={setExercises}
+      setRestTime={setRestTime}
+      setSetup={setSetup}
+    />
   }
   else {
     mode = <WorkingOut setSetup={setSetup} />
