@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from "react"
-import { Exercise } from "./exercise"
 import Timer from "./timer"
+import Workout from "./workout"
 
 export interface Props {
-  exercises: Exercise[]
-  restTime: number
+  workout: Workout
   setSetup: React.Dispatch<boolean>
 }
 
@@ -14,54 +13,74 @@ export enum Style {
   Transition = "working-out--transition",
 }
 
+export interface Stage {
+  attempt: number,
+  index: number,
+  rest: boolean
+  style: Style,
+}
+
 export function WorkingOut(props: Props): JSX.Element {
-  const [style, setStyle] = useState(Style.Inactive)
-  const [index, setIndex] = useState(0)
-  const [attempt, setAttempt] = useState(1)
-  const [rest, setRest] = useState(true)
+  const [stage, setStage] = useState({
+    attempt: 1,
+    index: 0,
+    rest: true,
+    style: Style.Inactive
+  })
   const [on, setOn] = useState(false)
 
   const onTick = useCallback((timeLeft: number) => {
     if (timeLeft <= 0) {
-      setAttempt(1)
-
-      if (rest) {
-        setStyle(Style.Active)
-        setRest(false)
+      const nextStage = {
+        ...stage,
+        attempt: 1
+      }
+      if (stage.rest) {
+        nextStage.style = Style.Active
+        nextStage.rest = false
+        setStage(nextStage)
         return
       }
 
-      setStyle(Style.Inactive)
-      if (index >= props.exercises.length) {
+      nextStage.style = Style.Inactive
+      nextStage.rest = true
+      nextStage.index = stage.index + 1
+      setStage(nextStage)
+      if (nextStage.index >= props.workout.exercises.length) {
         setOn(false)
       }
-      setRest(true)
-      setIndex(index + 1)
       return
     }
 
     if (timeLeft <= 4) {
-      setStyle(Style.Transition)
+      setStage({
+        ...stage,
+        style: Style.Transition
+      })
       return
     }
-  }, [rest, index, props.exercises])
+  }, [stage, props.workout.exercises])
 
   const go = useCallback(() => {
     setOn(!on)
   }, [on])
 
   const reset = useCallback(() => {
-    if (rest) {
-      setStyle(Style.Inactive)
+    const nextStage = {
+      ...stage,
+      attempt: stage.attempt + 1,
+    }
+    if (stage.rest) {
+      nextStage.style = Style.Inactive
     }
     else {
-      setStyle(Style.Active)
+      nextStage.style = Style.Active
     }
+    setStage(nextStage)
     setOn(false)
-    setAttempt(attempt + 1)
-  }, [attempt, rest])
+  }, [stage])
 
-  const exercise = props.exercises[index]
+  const exercise = props.workout.exercises[stage.index]
   let name = "Done!"
   let weight = ""
   if (exercise) {
@@ -70,12 +89,12 @@ export function WorkingOut(props: Props): JSX.Element {
   }
 
   let initialTime
-  if (rest) {
-    if (index === 0) {
-      initialTime = 10
+  if (stage.rest) {
+    if (stage.index === 0) {
+      initialTime = props.workout.leadTime
     }
     else {
-      initialTime = props.restTime
+      initialTime = props.workout.restTime
     }
   }
   else {
@@ -87,9 +106,9 @@ export function WorkingOut(props: Props): JSX.Element {
     }
   }
 
-  const id = `${index}:${attempt}:${rest}`
+  const id = `${stage.index}:${stage.attempt}:${stage.rest}`
   const goText = on ? "Pause" : "Start"
-  const className = `working-out ${style}`
+  const className = `working-out ${stage.style}`
 
   return <div className={className}>
     <div className="working-out__heading">

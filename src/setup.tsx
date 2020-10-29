@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Exercise } from "./exercise"
 import ExerciseInput from "./exerciseInput"
-import { loadExercises } from "./timerApp"
+import Workout from "./workout"
 
 export interface Props {
-  exercises: Exercise[],
-  restTime: number,
-  setExercises: React.Dispatch<Exercise[]>
-  setRestTime: React.Dispatch<number>,
+  workout: Workout
+  setWorkout: React.Dispatch<Workout>
 }
 
 export function loadDefaultWeight(): number {
@@ -32,11 +30,15 @@ function initialize(exercises: Exercise[], defaultWeight: number): Exercise[] {
 
 export function Setup(props: Props): JSX.Element {
   const [defaultWeight, setDefaultWeight] = useState(loadDefaultWeight())
-  const [exercises, setExercises] = useState(initialize(loadExercises(), defaultWeight))
+  const [exercises, setExercises] = useState(initialize(props.workout.exercises, defaultWeight))
+  const [restTime, setRestTime] = useState(props.workout.restTime)
+  const [leadTime, setLeadTime] = useState(props.workout.leadTime)
 
   useEffect(() => {
-    setExercises(initialize(props.exercises, defaultWeight))
-  }, [props.exercises])
+    setExercises(initialize(props.workout.exercises, defaultWeight))
+    setRestTime(props.workout.restTime)
+    setLeadTime(props.workout.leadTime)
+  }, [props.workout])
 
   const addAt = useCallback((addIndex: number) => {
     const newExercises = exercises.reduce((array, exercise, index) => {
@@ -103,8 +105,12 @@ export function Setup(props: Props): JSX.Element {
       }
       return array
     }, new Array<Exercise>())
-    props.setExercises(newExercises)
-  }, [exercises])
+    props.setWorkout({
+      exercises: newExercises,
+      restTime,
+      leadTime,
+    })
+  }, [exercises, restTime, leadTime])
 
   return <div className="setup timer-mode">
     <h1 className="setup__heading">Setup Exercises</h1>
@@ -130,20 +136,31 @@ export function Setup(props: Props): JSX.Element {
       <label className="setup__label">
         Rest Time
       </label>
-      <input className="setup__weight"
+      <input className="setup__field--number"
         type="number"
-        step="2.5"
         min="0"
-        name="weight"
-        value={props.restTime}
-        onChange={e => props.setRestTime(Number.parseFloat(e.currentTarget.value))} />
+        name="rest-time"
+        value={restTime}
+        onChange={e => setRestTime(Number.parseFloat(e.currentTarget.value))} />
+    </fieldset>
+
+    <fieldset className="setup__field-set">
+      <label className="setup__label">
+        Lead Time
+      </label>
+      <input className="setup__field--number"
+        type="number"
+        min="0"
+        name="lead-time"
+        value={leadTime}
+        onChange={e => setLeadTime(Number.parseFloat(e.currentTarget.value))} />
     </fieldset>
 
     <fieldset className="setup__field-set">
       <label className="setup__label">
         Default Weight
       </label>
-      <input className="setup__weight"
+      <input className="setup__field--number"
         type="number"
         step="2.5"
         min="0"
