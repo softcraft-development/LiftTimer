@@ -24,9 +24,7 @@ export function TimerApp(): JSX.Element {
 
   useEffect(() => {
     window.localStorage.setItem("exercises", JSON.stringify(exercises))
-    if (exercises.length === 0) {
-      setSetup(true)
-    }
+    setSetup(exercises.length === 0)
   }, [exercises])
 
   useEffect(() => {
