@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
-const RATE = 2
+const RATE = 10
 
 export interface Props {
   id: unknown
@@ -10,56 +10,51 @@ export interface Props {
 }
 
 type Interval = NodeJS.Timeout | null
-type LastUpdate = number | null
 
 export function Timer(props: Props): JSX.Element {
   const [timeLeft, setTimeLeft] = useState(props.initalTime)
-  const [interval, setIntervalValue] = useState<Interval>(null)
-  const [lastUpdate, setLastUpdate] = useState<LastUpdate>(null)
+  const interval = useRef<Interval>(null)
 
-  const tick = useCallback(() => {
-    const now = Date.now()
-    if (lastUpdate) {
-      const elapsed = now - lastUpdate
-      setTimeLeft(timeLeft - elapsed)
+  const endInterval = () => {
+    if (interval.current) {
+      clearInterval(interval.current)
+      interval.current = null
     }
-    setLastUpdate(now)
-  }, [lastUpdate, timeLeft])
-
-  const endInterval = useCallback(() => {
-    if (interval) {
-      clearInterval(interval)
-      setIntervalValue(null)
-    }
-  }, [interval])
+  }
 
   useEffect(() => {
     setTimeLeft(props.initalTime)
-    setLastUpdate(null)
     endInterval()
   }, [props.id, props.initalTime])
 
   useEffect(() => {
-    if (!props.on && interval) {
+    if (!props.on && interval.current) {
       endInterval()
       return
     }
 
-    if (props.on && !interval) {
-      const newInterval = setInterval(tick, 1000 / RATE)
-      setIntervalValue(newInterval)
-      tick()
+    if (props.on && !interval.current) {
+      let lastUpdate = Date.now()
+      let left = timeLeft
+      interval.current = setInterval(() => {
+        const now = Date.now()
+        const elapsed = (now - lastUpdate) / 1000
+        left = Math.max(left - elapsed, 0)
+        if (timeLeft <= 0) {
+          endInterval()
+        }
+        props.onTick(left)
+        setTimeLeft(left)
+        lastUpdate = now
+      }, 1000 / RATE)
     }
-
-    return endInterval()
-  }, [props.on, interval])
+  }, [props.on, props.onTick])
 
   useEffect(() => {
-    props.onTick(timeLeft)
-    if (timeLeft <= 0) {
+    return () => {
       endInterval()
     }
-  }, [timeLeft, props.onTick])
+  }, [])
 
   return <div className="timer">
     {Math.ceil(timeLeft).toLocaleString("en-ca", {

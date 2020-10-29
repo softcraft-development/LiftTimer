@@ -1,8 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import Setup from "./setup"
 import WorkingOut from "./workingOut"
 import { Exercise } from "./exercise"
-
 
 export function loadExercises(): Exercise[] {
   const exerciseData = window.localStorage.getItem("exercises")
@@ -17,7 +16,6 @@ export function loadRestTime(): number {
   const restTime = JSON.parse(window.localStorage.getItem("restTime") || "30")
   return restTime
 }
-
 
 export function TimerApp(): JSX.Element {
   const [exercises, setExercises] = useState<Exercise[]>(loadExercises())
@@ -45,7 +43,11 @@ export function TimerApp(): JSX.Element {
     />
   }
   else {
-    mode = <WorkingOut setSetup={setSetup} />
+    mode = <WorkingOut
+      exercises={exercises}
+      restTime={restTime}
+      setSetup={setSetup}
+    />
   }
 
   const app = mode
