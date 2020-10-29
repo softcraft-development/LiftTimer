@@ -24,11 +24,10 @@ export function ExerciseInput(props: Props): JSX.Element {
   }, [props.exercise])
 
   const updateExercise = useDebouncedCallback(() => {
-    console.log("Updating!")
     props.setExercise({
       name,
       time: Number.parseFloat(time),
-      weight: Number.parseFloat(time),
+      weight: Number.parseFloat(weight),
     })
   }, 500)
 
