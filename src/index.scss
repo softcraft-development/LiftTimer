@@ -90,9 +90,18 @@ h5 {
   width: 3em;
 }
 
-.timer-mode {
-  padding: 4em;
-  flex: 1 1 auto;
+.timer {
+  font-size: 800%;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.working-out {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .working-out--active {
@@ -104,12 +113,32 @@ h5 {
   }
 }
 
-.working-out--alert {
-  background-color: $orange;
-  color: white;
+.working-out__heading {
+  font-size: 200%;
 }
 
-.working-out--rest {
+.working-out__control {
+  margin-right: 1em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.working-out--transition {
+  background-color: $orange;
+  color: white;
+
+  button {
+    border-color: white;
+  }
+}
+
+.working-out--inactive {
   background-color: $red;
   color: white;
+
+  button {
+    border-color: white;
+  }
 }
