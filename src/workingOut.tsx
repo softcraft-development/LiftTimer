@@ -114,28 +114,30 @@ export function WorkingOut(props: Props): JSX.Element {
   const weightDisplay = (weight > 0) ? `${weight} lbs` : ""
 
   return <div className={className}>
-    <div className="working-out__heading">
-      <div className="working-out__exercise-name">{name}</div>
-      <div className="working-out__weight">{weightDisplay}</div>
-    </div>
+    <div className="working-out__content">
+      <div className="working-out__heading">
+        <div className="working-out__exercise-name">{name}</div>
+        <div className="working-out__weight">{weightDisplay}</div>
+      </div>
 
-    <Timer
-      id={id}
-      initalTime={initialTime}
-      on={on}
-      onTick={onTick}
-    />
+      <Timer
+        id={id}
+        initalTime={initialTime}
+        on={on}
+        onTick={onTick}
+      />
 
-    <div className="controls">
-      <button className="working-out__go working-out__control" onClick={go}>
-        {goText}
-      </button>
-      <button className="working-out__reset working-out__control" onClick={reset}>
-        Reset
-      </button>
-      <button className="working-out__setup working-out__control" onClick={() => props.setSetup(true)}>
-        Setup
-      </button>
+      <div className="working-out__controls">
+        <button className="working-out__go working-out__control" onClick={go}>
+          {goText}
+        </button>
+        <button className="working-out__reset working-out__control" onClick={reset}>
+          Reset
+        </button>
+        <button className="working-out__setup working-out__control" onClick={() => props.setSetup(true)}>
+          Setup
+        </button>
+      </div>
     </div>
   </div>
 }
