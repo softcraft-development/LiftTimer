@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Setup from "./setup"
 import WorkingOut from "./workingOut"
-import { Exercise } from "./exercise"
 import Workout, { loadWorkout, saveWorkout } from "./workout"
 
 
