@@ -76,7 +76,7 @@ export function ExerciseInput(props: Props): JSX.Element {
       </label>
       <input
         id={timeId}
-        className="setup__weight"
+        className="setup__time"
         type="number"
         min="0"
         name="time"

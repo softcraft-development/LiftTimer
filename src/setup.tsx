@@ -136,7 +136,7 @@ export function Setup(props: Props): JSX.Element {
       <label className="setup__label">
         Rest Time
       </label>
-      <input className="setup__field--number"
+      <input className="setup__field--number setup__time"
         type="number"
         min="0"
         name="rest-time"
@@ -148,7 +148,7 @@ export function Setup(props: Props): JSX.Element {
       <label className="setup__label">
         Lead Time
       </label>
-      <input className="setup__field--number"
+      <input className="setup__field--number setup__time"
         type="number"
         min="0"
         name="lead-time"
@@ -160,7 +160,7 @@ export function Setup(props: Props): JSX.Element {
       <label className="setup__label">
         Default Weight
       </label>
-      <input className="setup__field--number"
+      <input className="setup__field--number setup__weight"
         type="number"
         step="2.5"
         min="0"
@@ -169,8 +169,8 @@ export function Setup(props: Props): JSX.Element {
         onChange={e => setDefaultWeight(Number.parseFloat(e.currentTarget.value))} />
     </fieldset>
 
-    <div className="controls">
-      <button className="workout__start controls__control" onClick={startWorkout}>Start</button>
+    <div className="setup__controls">
+      <button className="setup__start" onClick={startWorkout}>Start</button>
     </div>
   </div>
 }
