@@ -91,17 +91,17 @@ h5 {
 }
 
 .timer {
-  font-size: 800%;
+  font-size: 900%;
   margin-top: 0.25em;
   margin-bottom: 0.25em;
 }
 
 .working-out {
-  width: 100%;
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  width: 100%;
 }
 
 .working-out--active {
@@ -114,6 +114,14 @@ h5 {
 }
 
 .working-out__heading {
+  text-align: center;
+}
+
+.working-out__exercise-name {
+  font-size: 300%;
+}
+
+.working-out__weight {
   font-size: 200%;
 }
 
