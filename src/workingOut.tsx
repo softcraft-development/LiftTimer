@@ -42,13 +42,15 @@ export function WorkingOut(props: Props): JSX.Element {
         return
       }
 
-      nextStage.style = Style.Inactive
-      nextStage.rest = true
       nextStage.index = stage.index + 1
-      setStage(nextStage)
+      nextStage.style = Style.Inactive
       if (nextStage.index >= props.workout.exercises.length) {
         setOn(false)
       }
+      else {
+        nextStage.rest = true
+      }
+      setStage(nextStage)
       return
     }
 
@@ -82,10 +84,10 @@ export function WorkingOut(props: Props): JSX.Element {
 
   const exercise = props.workout.exercises[stage.index]
   let name = "Done!"
-  let weight = ""
+  let weight = 0
   if (exercise) {
     name = exercise.name
-    weight = exercise.weight.toString()
+    weight = exercise.weight
   }
 
   let initialTime
@@ -109,11 +111,12 @@ export function WorkingOut(props: Props): JSX.Element {
   const id = `${stage.index}:${stage.attempt}:${stage.rest}`
   const goText = on ? "Pause" : "Start"
   const className = `working-out ${stage.style}`
+  const weightDisplay = (weight > 0) ? `${weight} lbs` : ""
 
   return <div className={className}>
     <div className="working-out__heading">
-      <span className="working-out__exercise-name">{name}: </span>
-      <span className="working-out__weight">{weight} lbs</span>
+      <div className="working-out__exercise-name">{name}</div>
+      <div className="working-out__weight">{weightDisplay}</div>
     </div>
 
     <Timer

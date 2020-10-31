@@ -6,15 +6,29 @@ export interface Props {
   id: unknown
   on: boolean
   initalTime: number
-  onTick: (timeLeft: number) => void
+  onTick: OnTick
 }
 
 type Interval = NodeJS.Timeout | null
+type OnTick = (timeLeft: number) => void
+
+export interface Tick {
+  timeLeft: number
+  lastUpdate: number | null
+}
 
 export function Timer(props: Props): JSX.Element {
-  const [timeLeft, setTimeLeft] = useState(props.initalTime)
-  const interval = useRef<Interval>(null)
+  const [tick, setTick] = useState<Tick>({
+    lastUpdate: null,
+    timeLeft: props.initalTime,
+  })
 
+  const onTick = useRef<OnTick>(props.onTick)
+  useEffect(() => {
+    onTick.current = props.onTick
+  }, [props.onTick])
+
+  const interval = useRef<Interval>(null)
   const endInterval = () => {
     if (interval.current) {
       clearInterval(interval.current)
@@ -23,32 +37,49 @@ export function Timer(props: Props): JSX.Element {
   }
 
   useEffect(() => {
-    setTimeLeft(props.initalTime)
-    endInterval()
+    setTick({
+      lastUpdate: null,
+      timeLeft: props.initalTime,
+    })
   }, [props.id, props.initalTime])
 
   useEffect(() => {
-    if (!props.on && interval.current) {
+    if (!props.on) {
       endInterval()
+      setTick((lastTick) => {
+        return {
+          ...lastTick,
+          lastUpdate: null
+        }
+      })
       return
     }
 
-    if (props.on && !interval.current) {
-      let lastUpdate = Date.now()
-      let left = timeLeft
-      interval.current = setInterval(() => {
-        const now = Date.now()
-        const elapsed = (now - lastUpdate) / 1000
-        left = Math.max(left - elapsed, 0)
-        if (timeLeft <= 0) {
-          endInterval()
-        }
-        props.onTick(left)
-        setTimeLeft(left)
-        lastUpdate = now
-      }, 1000 / RATE)
+    if (interval.current) {
+      return
     }
-  }, [props.on, props.onTick])
+    interval.current = setInterval(() => {
+      setTick((lastTick) => {
+        const lastUpdate = Date.now()
+        if (lastTick.lastUpdate === null) {
+          return {
+            ...lastTick,
+            lastUpdate
+          }
+        }
+        const elapsed = (lastUpdate - lastTick.lastUpdate) / 1000
+        const timeLeft = Math.max(lastTick.timeLeft - elapsed, 0)
+        if (lastTick.timeLeft === timeLeft) {
+          return lastTick
+        }
+        onTick.current(timeLeft)
+        return {
+          timeLeft,
+          lastUpdate,
+        }
+      })
+    }, 1000 / RATE)
+  }, [props.on])
 
   useEffect(() => {
     return () => {
@@ -57,7 +88,7 @@ export function Timer(props: Props): JSX.Element {
   }, [])
 
   return <div className="timer">
-    {Math.ceil(timeLeft).toLocaleString("en-ca", {
+    {Math.ceil(tick.timeLeft).toLocaleString("en-ca", {
       minimumFractionDigits: 0,
     })}
   </div>
