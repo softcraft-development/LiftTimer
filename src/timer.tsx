@@ -1,16 +1,6 @@
-import "./sounds.mp3"
 import React, { useEffect, useRef, useState } from "react"
-import { Howl } from "howler"
 
-const RATE = 10
-
-const sounds = new Howl({
-  src: ["/sounds.mp3"],
-  sprite: {
-    high: [501, 500],
-    low: [0, 500],
-  }
-})
+const RATE = 20
 
 export interface Props {
   id: unknown
@@ -20,7 +10,7 @@ export interface Props {
 }
 
 type Interval = NodeJS.Timeout | null
-type OnTick = (timeLeft: number) => void
+type OnTick = (timeLeft: number, lastTimeLeft: number) => void
 
 export interface Tick {
   timeLeft: number
@@ -83,17 +73,7 @@ export function Timer(props: Props): JSX.Element {
           return lastTick
         }
 
-        const difference = Math.floor(lastTick.timeLeft) - Math.floor(timeLeft)
-        if (difference >= 1) {
-          if (timeLeft < 1) {
-            sounds.play("high")
-          }
-          else if (timeLeft <= 4) {
-            sounds.play("low")
-          }
-        }
-
-        onTick.current(timeLeft)
+        onTick.current(timeLeft, lastTick.timeLeft)
         return {
           timeLeft,
           lastUpdate,

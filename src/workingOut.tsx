@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useContext, useState } from "react"
+import SoundContext from "./soundContext"
 import Timer from "./timer"
 import Workout from "./workout"
 
@@ -29,8 +30,19 @@ export function WorkingOut(props: Props): JSX.Element {
   })
   const [on, setOn] = useState(false)
 
-  const onTick = useCallback((timeLeft: number) => {
-    if (timeLeft <= 0) {
+  const sounds = useContext(SoundContext)
+
+  const onTick = useCallback((timeLeft, lastTimeLeft) => {
+    const secondsLeft = Math.floor(timeLeft)
+    const lastSecondsLeft = Math.floor(lastTimeLeft)
+    if (secondsLeft < lastSecondsLeft) {
+      if (secondsLeft < 3 && secondsLeft >= 0) {
+        sounds.play("low")
+      }
+    }
+
+    if (timeLeft === 0) {
+      sounds.play("high")
       const nextStage = {
         ...stage,
         attempt: 1
@@ -54,14 +66,14 @@ export function WorkingOut(props: Props): JSX.Element {
       return
     }
 
-    if (timeLeft <= 4) {
+    if (timeLeft <= 3) {
       setStage({
         ...stage,
         style: Style.Transition
       })
       return
     }
-  }, [stage, props.workout.exercises])
+  }, [stage, props.workout.exercises, sounds])
 
   const go = useCallback(() => {
     setOn(!on)
