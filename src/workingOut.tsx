@@ -99,6 +99,10 @@ export function WorkingOut(props: Props): JSX.Element {
   let weight = 0
   if (exercise) {
     name = exercise.name
+    if (stage.rest) {
+      name = `Rest: ${name}`
+    }
+
     weight = exercise.weight
   }
 
