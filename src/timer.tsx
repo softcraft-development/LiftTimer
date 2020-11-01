@@ -1,14 +1,22 @@
+import "./sounds.mp3"
 import React, { useEffect, useRef, useState } from "react"
-import { Sounds } from "./workingOut"
+import { Howl } from "howler"
 
 const RATE = 10
+
+const sounds = new Howl({
+  src: ["/sounds.mp3"],
+  sprite: {
+    high: [501, 500],
+    low: [0, 500],
+  }
+})
 
 export interface Props {
   id: unknown
   on: boolean
   initalTime: number
   onTick: OnTick
-  sounds: Sounds | null
 }
 
 type Interval = NodeJS.Timeout | null
@@ -74,17 +82,17 @@ export function Timer(props: Props): JSX.Element {
         if (lastTick.timeLeft === timeLeft) {
           return lastTick
         }
-        if (props.sounds) {
-          const difference = Math.floor(lastTick.timeLeft) - Math.floor(timeLeft)
-          if (difference >= 1) {
-            if (timeLeft < 1) {
-              props.sounds.high.play()
-            }
-            else if (timeLeft <= 4) {
-              props.sounds.low.play()
-            }
+
+        const difference = Math.floor(lastTick.timeLeft) - Math.floor(timeLeft)
+        if (difference >= 1) {
+          if (timeLeft < 1) {
+            sounds.play("high")
+          }
+          else if (timeLeft <= 4) {
+            sounds.play("low")
           }
         }
+
         onTick.current(timeLeft)
         return {
           timeLeft,
@@ -92,7 +100,7 @@ export function Timer(props: Props): JSX.Element {
         }
       })
     }, 1000 / RATE)
-  }, [props.on, props.sounds])
+  }, [props.on])
 
   useEffect(() => {
     return () => {
