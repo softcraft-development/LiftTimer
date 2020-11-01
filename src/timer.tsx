@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import "./ding.ogg"
-import "./dingHigh.ogg"
+import { Sounds } from "./workingOut"
 
 const RATE = 10
 
@@ -9,6 +8,7 @@ export interface Props {
   on: boolean
   initalTime: number
   onTick: OnTick
+  sounds: Sounds | null
 }
 
 type Interval = NodeJS.Timeout | null
@@ -18,12 +18,6 @@ export interface Tick {
   timeLeft: number
   lastUpdate: number | null
 }
-
-const ding = new Audio("./ding.ogg")
-ding.autoplay = false
-
-const dingHigh = new Audio("./dingHigh.ogg")
-ding.autoplay = false
 
 export function Timer(props: Props): JSX.Element {
   const [tick, setTick] = useState<Tick>({
@@ -80,13 +74,15 @@ export function Timer(props: Props): JSX.Element {
         if (lastTick.timeLeft === timeLeft) {
           return lastTick
         }
-        const difference = Math.floor(lastTick.timeLeft) - Math.floor(timeLeft)
-        if (difference >= 1) {
-          if (timeLeft < 1) {
-            dingHigh.play()
-          }
-          else if (timeLeft <= 4) {
-            ding.play()
+        if (props.sounds) {
+          const difference = Math.floor(lastTick.timeLeft) - Math.floor(timeLeft)
+          if (difference >= 1) {
+            if (timeLeft < 1) {
+              props.sounds.high.play()
+            }
+            else if (timeLeft <= 4) {
+              props.sounds.low.play()
+            }
           }
         }
         onTick.current(timeLeft)
@@ -96,7 +92,7 @@ export function Timer(props: Props): JSX.Element {
         }
       })
     }, 1000 / RATE)
-  }, [props.on])
+  }, [props.on, props.sounds])
 
   useEffect(() => {
     return () => {

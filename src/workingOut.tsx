@@ -1,3 +1,5 @@
+import "./ding.ogg"
+import "./dingHigh.ogg"
 import React, { useCallback, useState } from "react"
 import Timer from "./timer"
 import Workout from "./workout"
@@ -20,6 +22,11 @@ export interface Stage {
   style: Style,
 }
 
+export interface Sounds {
+  low: HTMLAudioElement
+  high: HTMLAudioElement
+}
+
 export function WorkingOut(props: Props): JSX.Element {
   const [stage, setStage] = useState({
     attempt: 1,
@@ -28,6 +35,7 @@ export function WorkingOut(props: Props): JSX.Element {
     style: Style.Inactive
   })
   const [on, setOn] = useState(false)
+  const [sounds, setSounds] = useState<Sounds | null>(null)
 
   const onTick = useCallback((timeLeft: number) => {
     if (timeLeft <= 0) {
@@ -65,6 +73,15 @@ export function WorkingOut(props: Props): JSX.Element {
 
   const go = useCallback(() => {
     setOn(!on)
+    setSounds((current) => {
+      if (current == null) {
+        return {
+          low: new Audio("./ding.ogg"),
+          high: new Audio("./dingHigh.ogg"),
+        }
+      }
+      return current
+    })
   }, [on])
 
   const reset = useCallback(() => {
@@ -125,6 +142,7 @@ export function WorkingOut(props: Props): JSX.Element {
         initalTime={initialTime}
         on={on}
         onTick={onTick}
+        sounds={sounds}
       />
 
       <div className="working-out__controls">
