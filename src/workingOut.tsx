@@ -111,7 +111,7 @@ export function WorkingOut(props: Props): JSX.Element {
   const id = `${stage.index}:${stage.attempt}:${stage.rest}`
   const goText = on ? "Pause" : "Start"
   const className = `working-out ${stage.style}`
-  const weightDisplay = (weight > 0) ? `${weight} lbs` : ""
+  const weightDisplay = (weight > 0) ? `${weight} lbs` : "\u00A0"
 
   return <div className={className}>
     <div className="working-out__content">
