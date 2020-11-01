@@ -1,5 +1,5 @@
-import "./ding.ogg"
-import "./dingHigh.ogg"
+import "./dingLow.mp3"
+import "./dingHigh.mp3"
 import React, { useCallback, useState } from "react"
 import Timer from "./timer"
 import Workout from "./workout"
@@ -75,10 +75,11 @@ export function WorkingOut(props: Props): JSX.Element {
     setOn(!on)
     setSounds((current) => {
       if (current == null) {
-        return {
-          low: new Audio("./ding.ogg"),
-          high: new Audio("./dingHigh.ogg"),
+        const next: Sounds = {
+          low: new Audio("./dingLow.mp3"),
+          high: new Audio("./dingHigh.mp3"),
         }
+        return next
       }
       return current
     })
