@@ -50,6 +50,17 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.ogg$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+            },
+          },
+        ],
+      },
     ],
   },
   performance: {
