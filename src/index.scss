@@ -92,11 +92,25 @@ input {
   padding: 0.1em;
 }
 
+.setup__other {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.setup__other-field {
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
 .setup__weight {
   width: 3em;
 }
 
 .setup__time {
+  width: 3em;
+}
+
+.setup__sets {
   width: 3em;
 }
 
@@ -149,8 +163,14 @@ input {
   font-size: 300%;
 }
 
-.working-out__weight {
+.working-out__info {
   font-size: 200%;
+  display: flex;
+  align-content: space-around;
+
+  & span {
+    margin: 0em 1em;
+  }
 }
 
 .working-out__control {

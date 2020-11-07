@@ -19,14 +19,16 @@ export interface Stage {
   index: number,
   rest: boolean
   style: Style,
+  workoutSet: number,
 }
 
 export function WorkingOut(props: Props): JSX.Element {
-  const [stage, setStage] = useState({
+  const [stage, setStage] = useState<Stage>({
     attempt: 1,
     index: 0,
     rest: true,
-    style: Style.Inactive
+    style: Style.Inactive,
+    workoutSet: 1,
   })
   const [on, setOn] = useState(false)
 
@@ -57,7 +59,14 @@ export function WorkingOut(props: Props): JSX.Element {
       nextStage.index = stage.index + 1
       nextStage.style = Style.Inactive
       if (nextStage.index >= props.workout.exercises.length) {
-        setOn(false)
+        if (stage.workoutSet + 1 > props.workout.sets) {
+          setOn(false)
+        }
+        else {
+          nextStage.workoutSet = stage.workoutSet + 1
+          nextStage.index = 0
+          nextStage.rest = true
+        }
       }
       else {
         nextStage.rest = true
@@ -73,7 +82,7 @@ export function WorkingOut(props: Props): JSX.Element {
       })
       return
     }
-  }, [stage, props.workout.exercises, sounds])
+  }, [stage, props.workout, sounds])
 
   const go = useCallback(() => {
     setOn(!on)
@@ -108,7 +117,7 @@ export function WorkingOut(props: Props): JSX.Element {
 
   let initialTime
   if (stage.rest) {
-    if (stage.index === 0) {
+    if (stage.index === 0 && stage.workoutSet === 1) {
       initialTime = props.workout.leadTime
     }
     else {
@@ -128,12 +137,16 @@ export function WorkingOut(props: Props): JSX.Element {
   const goText = on ? "Pause" : "Start"
   const className = `working-out ${stage.style}`
   const weightDisplay = (weight > 0) ? `${weight} lbs` : "\u00A0"
+  const activity = stage.rest ? "Rest" : "Exercise"
+  const workoutSetDisplay = `${stage.workoutSet} / ${props.workout.sets}`
 
   return <div className={className}>
     <div className="working-out__content">
-      <div className="working-out__heading">
-        <div className="working-out__exercise-name">{name}</div>
-        <div className="working-out__weight">{weightDisplay}</div>
+      <div className="working-out__exercise-name working-out__heading">{name}</div>
+      <div className="working-out__heading working-out__info">
+        <span className="working-out__activity">{activity}</span>
+        <span className="working-out__weight">{weightDisplay}</span>
+        <span className="working-out__set-display">{workoutSetDisplay}</span>
       </div>
 
       <Timer

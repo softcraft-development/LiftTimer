@@ -33,11 +33,13 @@ export function Setup(props: Props): JSX.Element {
   const [exercises, setExercises] = useState(initialize(props.workout.exercises, defaultWeight))
   const [restTime, setRestTime] = useState(props.workout.restTime)
   const [leadTime, setLeadTime] = useState(props.workout.leadTime)
+  const [sets, setSets] = useState(props.workout.sets)
 
   useEffect(() => {
     setExercises(initialize(props.workout.exercises, defaultWeight))
     setRestTime(props.workout.restTime)
     setLeadTime(props.workout.leadTime)
+    setSets(props.workout.sets)
   }, [props.workout])
 
   const addAt = useCallback((addIndex: number) => {
@@ -109,6 +111,7 @@ export function Setup(props: Props): JSX.Element {
       exercises: newExercises,
       restTime,
       leadTime,
+      sets,
     })
   }, [exercises, restTime, leadTime])
 
@@ -132,42 +135,57 @@ export function Setup(props: Props): JSX.Element {
       }
     </div>
 
-    <fieldset className="setup__field-set">
-      <label className="setup__label">
-        Rest Time
-      </label>
-      <input className="setup__field--number setup__time"
-        type="number"
-        min="0"
-        name="rest-time"
-        value={restTime}
-        onChange={e => setRestTime(Number.parseFloat(e.currentTarget.value))} />
-    </fieldset>
+    <div className="setup__other">
+      <fieldset className="setup__field-set setup__other-field">
+        <label className="setup__label">
+          Rest Time
+        </label>
+        <input className="setup__field--number setup__time"
+          type="number"
+          min="0"
+          name="rest-time"
+          value={restTime}
+          onChange={e => setRestTime(Number.parseFloat(e.currentTarget.value))} />
+      </fieldset>
 
-    <fieldset className="setup__field-set">
-      <label className="setup__label">
-        Lead Time
-      </label>
-      <input className="setup__field--number setup__time"
-        type="number"
-        min="0"
-        name="lead-time"
-        value={leadTime}
-        onChange={e => setLeadTime(Number.parseFloat(e.currentTarget.value))} />
-    </fieldset>
+      <fieldset className="setup__field-set setup__other-field">
+        <label className="setup__label">
+          Lead Time
+        </label>
+        <input className="setup__field--number setup__time"
+          type="number"
+          min="0"
+          name="lead-time"
+          value={leadTime}
+          onChange={e => setLeadTime(Number.parseFloat(e.currentTarget.value))} />
+      </fieldset>
 
-    <fieldset className="setup__field-set">
-      <label className="setup__label">
-        Default Weight
-      </label>
-      <input className="setup__field--number setup__weight"
-        type="number"
-        step="2.5"
-        min="0"
-        name="weight"
-        value={defaultWeight}
-        onChange={e => setDefaultWeight(Number.parseFloat(e.currentTarget.value))} />
-    </fieldset>
+      <fieldset className="setup__field-set setup__other-field">
+        <label className="setup__label">
+          Sets
+        </label>
+        <input className="setup__field--number setup__sets"
+          type="number"
+          min="1"
+          name="weight"
+          value={sets}
+          onChange={e => setSets(Number.parseInt(e.currentTarget.value))} />
+      </fieldset>
+
+      <fieldset className="setup__field-set setup__other-field">
+        <label className="setup__label">
+          Default Weight
+        </label>
+        <input className="setup__field--number setup__weight"
+          type="number"
+          step="2.5"
+          min="0"
+          name="weight"
+          value={defaultWeight}
+          onChange={e => setDefaultWeight(Number.parseFloat(e.currentTarget.value))} />
+      </fieldset>
+
+    </div>
 
     <div className="setup__controls">
       <button className="setup__start" onClick={startWorkout}>Start</button>
